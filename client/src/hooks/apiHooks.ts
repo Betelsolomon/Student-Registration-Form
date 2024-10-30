@@ -1,7 +1,7 @@
 import axios from "axios";
 import Student from "../types"; 
 
-const apiUrl = "/api/students"; 
+const apiUrl = "http://localhost:5000/api/students"; 
 
 
 export const fetchStudents = async (): Promise<Student[]> => {

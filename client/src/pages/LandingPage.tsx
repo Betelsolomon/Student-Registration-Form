@@ -28,30 +28,7 @@ function LandingPage() {
   const [activeView, setActiveView] = useState<'register' | 'list'>('register')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [students, setStudents] = useState<Student[]>([
-    {
-      id: '1',
-      name: 'Sarah Johnson',
-      age: 19,
-      course: 'Computer Science',
-      email: 'sarah.j@example.com',
-      phone: '1234567890'
-    },
-    {
-      id: '2',
-      name: 'Michael Chen',
-      age: 21,
-      course: 'Business Administration',
-      email: 'michael.c@example.com',
-      phone: '2345678901'
-    },
-    {
-      id: '3',
-      name: 'Emma Davis',
-      age: 20,
-      course: 'Graphic Design',
-      email: 'emma.d@example.com',
-      phone: '3456789012'
-    }
+   
   ])
 
   const {
