@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState } from 'react'
-import { InputField, ViewToggle } from '../components'
+import { InputField, StudentCard, ViewToggle } from '../components'
 import { motion, AnimatePresence } from 'framer-motion'
 import Student from "../types";
 
@@ -25,6 +25,33 @@ const schema = yup.object().shape({
 
 function LandingPage() {
   const [activeView, setActiveView] = useState<'register' | 'list'>('register')
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null)
+  const [students, setStudents] = useState<Student[]>([
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      age: 19,
+      course: 'Computer Science',
+      email: 'sarah.j@example.com',
+      phone: '1234567890'
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      age: 21,
+      course: 'Business Administration',
+      email: 'michael.c@example.com',
+      phone: '2345678901'
+    },
+    {
+      id: '3',
+      name: 'Emma Davis',
+      age: 20,
+      course: 'Graphic Design',
+      email: 'emma.d@example.com',
+      phone: '3456789012'
+    }
+  ])
 
   const {
     register,
@@ -40,6 +67,10 @@ function LandingPage() {
     console.log(data)
   };
   
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault()
+    
+  }
 
   return (
     <div className="min-h-screen bg-[#C1E8FF] p-4 md:p-6">
@@ -107,9 +138,21 @@ function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="max-w-2xl mx-auto"
             >
-              <h1>Students</h1>
+              <div className="space-y-8">
+                {students.length === 0 ? (
+                  <p className="text-center text-[#052659]/40 py-8">No students registered yet.</p>
+                ) : (
+                  students.map((student) => (
+                    <StudentCard
+                      key={student.id}
+                      student={student}
+                      onEdit={setEditingStudent}
+                      onDelete={(id: any) => setStudents(prev => prev.filter(s => s.id !== id))}
+                    />
+                  ))
+                )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
