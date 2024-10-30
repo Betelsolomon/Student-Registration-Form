@@ -1,6 +1,8 @@
+import { LandingPage } from "./pages";
+
 function App() {
   return (
-   <h1>hello</h1>
+   <LandingPage/>
   )
 }
 
