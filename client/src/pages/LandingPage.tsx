@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { InputField, Modal, StudentCard, ViewToggle } from '../components'
 import { motion, AnimatePresence } from 'framer-motion'
 import Student from "../types";
+import { createStudent, deleteStudent, fetchStudents, updateStudent } from "../hooks/apiHooks";
 
 const schema = yup.object().shape({
   name: yup
@@ -64,21 +65,30 @@ function LandingPage() {
   });
   
 
-  const onSubmit = (data: Student) => {
-    console.log(data);
+  const onSubmit = async (data: Student) => {
+    const newStudent = await createStudent(data);
+    setStudents((prev) => [...prev, newStudent]);
     reset();
   };
   
-  const onUpdate = (data: Student) => {
-    console.log(data);
+  const onUpdate = async (data: Student) => {
+    const updatedStudent = await updateStudent(data);
+    setStudents((prev) => prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)));
     reset();
   };
 
+  const onDelete = async (id: string) => {
+    await deleteStudent(id);
+    setStudents((prev) => prev.filter((s) => s.id !== id));
+  }
+
   useEffect(() => {
-    if (editingStudent) {
-      reset(editingStudent);
-    }
-  }, [editingStudent, reset]);
+    const loadStudents = async () => {
+      const studentList = await fetchStudents();
+      setStudents(studentList);
+    };
+    loadStudents();
+  }, [ ]);
   return (
     <div className="min-h-screen bg-[#C1E8FF] p-4 md:p-6">
       <div className="max-w-md mx-auto mb-8">
@@ -155,7 +165,7 @@ function LandingPage() {
                       key={student.id}
                       student={student}
                       onEdit={setEditingStudent}
-                      onDelete={(id: any) => setStudents(prev => prev.filter(s => s.id !== id))}
+                      onDelete={onDelete}
                     />
                   ))
                 )}
