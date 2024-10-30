@@ -1,8 +1,8 @@
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from 'react'
-import { InputField, StudentCard, ViewToggle } from '../components'
+import React, { useEffect, useState } from 'react'
+import { InputField, Modal, StudentCard, ViewToggle } from '../components'
 import { motion, AnimatePresence } from 'framer-motion'
 import Student from "../types";
 
@@ -56,7 +56,8 @@ function LandingPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
+    ,reset 
   } = useForm<Student>({
     resolver: yupResolver(schema),
     mode: "onTouched" // or "onChange"
@@ -64,14 +65,20 @@ function LandingPage() {
   
 
   const onSubmit = (data: Student) => {
-    console.log(data)
+    console.log(data);
+    reset();
   };
   
-  const handleUpdate = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-  }
+  const onUpdate = (data: Student) => {
+    console.log(data);
+    reset();
+  };
 
+  useEffect(() => {
+    if (editingStudent) {
+      reset(editingStudent);
+    }
+  }, [editingStudent, reset]);
   return (
     <div className="min-h-screen bg-[#C1E8FF] p-4 md:p-6">
       <div className="max-w-md mx-auto mb-8">
@@ -157,6 +164,56 @@ function LandingPage() {
           )}
         </AnimatePresence>
       </div>
+      <Modal
+        isOpen={!!editingStudent}
+        onClose={() => setEditingStudent(null)}
+        title="Edit Student"
+      >
+        {editingStudent && (
+          <form onSubmit={handleSubmit(onUpdate)} className="space-y-4">
+          <InputField
+            name="name"
+            register={register}
+            type="text"
+            placeholder="Name"
+            error={errors.name}
+          />
+          <InputField
+            name="age"
+            register={register}
+            type="number"
+            placeholder="Age"
+            error={errors.age}
+          />
+          <InputField
+            name="course"
+            register={register}
+            placeholder="Course"
+            error={errors.course}
+          />
+          <InputField
+            name="email"
+            register={register}
+            type="email"
+            placeholder="Email"
+            error={errors.email}
+          />
+          <InputField
+            name="phone"
+            register={register}
+            type="text"
+            placeholder="Phone"
+            error={errors.phone}
+          />
+          <button
+            type="submit"
+            className="w-full mt-6 py-2 border border-[#052659] text-[#052659] hover:bg-[#052659] hover:text-[#C1E8FF] transition-colors duration-300"
+          >
+            Register
+          </button>
+        </form>
+        )}
+      </Modal>
     </div>
   )
 }
