@@ -27,9 +27,9 @@ const schema = yup.object().shape({
 function LandingPage() {
   const [activeView, setActiveView] = useState<'register' | 'list'>('register')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
-  const [students, setStudents] = useState<Student[]>([
-   
-  ])
+  const [students, setStudents] = useState<Student[]>([])
+
+  console.log(students)
 
   const {
     register,
@@ -49,14 +49,15 @@ function LandingPage() {
   };
   
   const onUpdate = async (data: Student) => {
+    data._id = editingStudent?._id;
     const updatedStudent = await updateStudent(data);
-    setStudents((prev) => prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)));
+    setStudents((prev) => prev.map((s) => (s._id === updatedStudent._id ? updatedStudent : s)));
     reset();
   };
 
   const onDelete = async (id: string) => {
     await deleteStudent(id);
-    setStudents((prev) => prev.filter((s) => s.id !== id));
+    setStudents((prev) => prev.filter((s) => s._id !== id));
   }
 
   useEffect(() => {
@@ -120,8 +121,7 @@ function LandingPage() {
                 <button
                   type="submit"
                   className="w-full mt-6 py-2 border border-[#052659] text-[#052659] hover:bg-[#052659] hover:text-[#C1E8FF] transition-colors duration-300"
-                >
-                  Register
+                >Register
                 </button>
               </form>
             </motion.div>
@@ -139,7 +139,7 @@ function LandingPage() {
                 ) : (
                   students.map((student) => (
                     <StudentCard
-                      key={student.id}
+                      key={student._id}
                       student={student}
                       onEdit={setEditingStudent}
                       onDelete={onDelete}
@@ -196,7 +196,7 @@ function LandingPage() {
             type="submit"
             className="w-full mt-6 py-2 border border-[#052659] text-[#052659] hover:bg-[#052659] hover:text-[#C1E8FF] transition-colors duration-300"
           >
-            Register
+            Update
           </button>
         </form>
         )}

@@ -13,7 +13,7 @@ const StudentCard = ({
     onDelete: (id: string) => void
   }) => (
     <motion.div
-    key={student.id}
+    key={student._id}
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -10 }}
@@ -26,7 +26,7 @@ const StudentCard = ({
         <button onClick={() => onEdit(student)}>
             <Pencil className="w-4 h-4 text-[#052659]" />
           </button>
-          <button onClick={() => onDelete(student.id)}>
+          <button onClick={() => onDelete(student._id)}>
             <Trash2 className="w-4 h-4 text-[#052659]" />
           </button>
         </div>

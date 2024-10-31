@@ -17,7 +17,7 @@ export const createStudent = async (student: Omit<Student, "id">): Promise<Stude
 
 
 export const updateStudent = async (student: Student): Promise<Student> => {
-  const response = await axios.put<Student>(`${apiUrl}/${student.id}`, student);
+  const response = await axios.put<Student>(`${apiUrl}/${student._id}`, student);
   return response.data;
 };
 
