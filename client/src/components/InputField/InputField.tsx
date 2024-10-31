@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
+
 
 const InputField = ({ register, name, type = "text", placeholder, error }: {
     register: any,

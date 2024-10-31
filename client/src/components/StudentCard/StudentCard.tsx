@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Student from '../../types'
 import { Pencil, Trash2 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -8,7 +8,7 @@ const StudentCard = ({
     onEdit,
     onDelete 
   }: {
-    student: Student
+    student: any
     onEdit: (student: Student) => void
     onDelete: (id: string) => void
   }) => (
